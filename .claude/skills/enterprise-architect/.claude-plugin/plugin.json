@@ -1,0 +1,15 @@
+{
+  "name": "enterprise-architect",
+  "version": "1.0.0",
+  "description": "Cross-platform architecture strategy and tech governance for Groupon. Decisions spanning Continuum, Encore, MBNXT, and Data platform boundaries.",
+  "category": "architecture",
+  "tags": ["continuum", "encore", "mbnxt", "migration", "strangler-fig", "vendor-evaluation", "security", "adr"],
+  "skill": "SKILL.md",
+  "references": [],
+  "templates": ["templates/design-doc.md", "templates/adr.md"],
+  "examples": ["examples/capability-placement-decision.md"],
+  "compatible_with": ["claude-code"],
+  "install_path": ".claude/skills/enterprise-architect",
+  "author": "zero-click workspace",
+  "license": "internal"
+}

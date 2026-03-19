@@ -1,0 +1,11 @@
+# Credentials — never commit
+tools/gcp-billing/.env
+tools/gcp-billing/service-account-key.json
+tools/jira/.env
+tools/asana/.env
+**/*.env
+**/*-key.json
+**/*-credentials.json
+
+# OS
+.DS_Store

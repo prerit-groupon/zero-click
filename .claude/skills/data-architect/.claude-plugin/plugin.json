@@ -1,0 +1,18 @@
+{
+  "name": "data-architect",
+  "version": "1.0.0",
+  "description": "Data infrastructure, analytics, and governance architecture for Groupon. BigQuery, Keboola, Kafka, Airflow, OpenMetadata, Teradata migration, GDPR/PII compliance.",
+  "category": "architecture",
+  "tags": ["bigquery", "kafka", "keboola", "airflow", "teradata", "gdpr", "pii", "cdc", "megatron"],
+  "skill": "SKILL.md",
+  "references": [
+    "references/data-platform-overview.md",
+    "references/teradata-migration.md"
+  ],
+  "templates": ["templates/pipeline-design-doc.md", "templates/schema-contract.md"],
+  "examples": ["examples/cdc-to-bigquery.md"],
+  "compatible_with": ["claude-code"],
+  "install_path": ".claude/skills/data-architect",
+  "author": "zero-click workspace",
+  "license": "internal"
+}

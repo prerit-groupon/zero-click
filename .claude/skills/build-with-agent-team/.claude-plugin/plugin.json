@@ -1,0 +1,17 @@
+{
+  "name": "build-with-agent-team",
+  "version": "1.0.0",
+  "description": "Coordinate multi-agent implementation across independent Groupon system boundaries. Lead agent writes integration contracts first, then spawns specialists in parallel.",
+  "category": "workflow",
+  "tags": ["multi-agent", "parallel", "contracts", "encore", "mbnxt", "integration"],
+  "skill": "SKILL.md",
+  "references": [
+    "references/contract-patterns.md"
+  ],
+  "templates": ["templates/contracts.md", "templates/agent-prompt.md"],
+  "examples": ["examples/encore-mbnxt-fullstack.md"],
+  "compatible_with": ["claude-code"],
+  "install_path": ".claude/skills/build-with-agent-team",
+  "author": "zero-click workspace",
+  "license": "internal"
+}

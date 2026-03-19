@@ -1,0 +1,23 @@
+{
+  "name": "encore-monorepo",
+  "version": "1.0.0",
+  "description": "Complete architectural reference for Groupon's Encore-based monorepo. 78 TS + 2 Go + 16 Python services, cloud infra, databases, messaging, Redis, CI/CD, observability, risks, ORR/SOX posture.",
+  "category": "reference",
+  "tags": ["encore", "monorepo", "typescript", "go", "python", "gcp", "cloud-run", "postgresql", "redis", "kafka", "sox", "orr"],
+  "skill": "SKILL.md",
+  "references": [
+    "references/cloud-infrastructure.md",
+    "references/databases.md",
+    "references/messaging-async.md",
+    "references/redis-caching.md",
+    "references/cicd-github.md",
+    "references/observability.md",
+    "references/risks-roadmap.md"
+  ],
+  "templates": [],
+  "examples": [],
+  "compatible_with": ["claude-code"],
+  "install_path": ".claude/skills/encore-monorepo",
+  "author": "zero-click workspace",
+  "license": "internal"
+}

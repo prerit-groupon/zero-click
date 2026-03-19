@@ -1,0 +1,408 @@
+{
+  "_description": "Machine-readable manifest of all CICDO repositories. Agents: use this for programmatic repo lookup. Humans: see references/repos.md for a readable version.",
+  "_version": "2.0.0",
+  "_last_updated": "2026-03-18",
+  "_total_repos": 40,
+  "repositories": [
+    {
+      "name": "clam-develop",
+      "domain": "monitoring",
+      "description": "CLAM core — Cluster Aggregator for Metrics. Aggregates time series from Kafka streams.",
+      "language": "java",
+      "org": "metrics",
+      "git_url": "https://github.groupondev.com/metrics/clam",
+      "branch": "develop",
+      "tags": ["clam", "metrics", "aggregation", "kafka"]
+    },
+    {
+      "name": "CLAM_KafkaStream-develop",
+      "domain": "monitoring",
+      "description": "CLAM Kafka stream processing component. Consumes from metrics Kafka topics.",
+      "language": "java",
+      "org": "metrics",
+      "git_url": "https://github.groupondev.com/metrics/CLAM_KafkaStream",
+      "branch": "develop",
+      "tags": ["clam", "kafka", "streaming", "metrics"]
+    },
+    {
+      "name": "telegraf-deployment-develop",
+      "domain": "monitoring",
+      "description": "Telegraf agent deployment configurations across environments.",
+      "language": "yaml",
+      "org": "metrics",
+      "git_url": "https://github.groupondev.com/metrics/telegraf-deployment",
+      "branch": "develop",
+      "tags": ["telegraf", "deployment", "metrics-collection"]
+    },
+    {
+      "name": "telegraf-dev-env-develop",
+      "domain": "monitoring",
+      "description": "Telegraf local development environment setup.",
+      "language": "yaml",
+      "org": "metrics",
+      "git_url": "https://github.groupondev.com/metrics/telegraf-dev-env",
+      "branch": "develop",
+      "tags": ["telegraf", "development", "local"]
+    },
+    {
+      "name": "metrics-v2-main",
+      "domain": "monitoring",
+      "description": "Metrics v2 pipeline — next-generation metrics ingestion and processing.",
+      "language": "go",
+      "org": "metrics",
+      "git_url": "https://github.groupondev.com/metrics/metrics-v2",
+      "branch": "main",
+      "tags": ["metrics", "pipeline", "v2"]
+    },
+    {
+      "name": "metrics-gcp-terrabase-main",
+      "domain": "monitoring",
+      "description": "Terraform for monitoring GCP infrastructure (Thanos, storage, networking).",
+      "language": "terraform",
+      "org": "metrics",
+      "git_url": "https://github.groupondev.com/metrics/metrics-gcp-terrabase",
+      "branch": "main",
+      "tags": ["terraform", "gcp", "infrastructure", "thanos"]
+    },
+    {
+      "name": "gcp-prometheus-main",
+      "domain": "monitoring",
+      "description": "Prometheus configurations for GCP-hosted clusters.",
+      "language": "yaml",
+      "org": "metrics",
+      "git_url": "https://github.groupondev.com/metrics/gcp-prometheus",
+      "branch": "main",
+      "tags": ["prometheus", "gcp", "scraping"]
+    },
+    {
+      "name": "grafana-terraform-main",
+      "domain": "monitoring",
+      "description": "Grafana infrastructure as code — dashboards, datasources, alert rules.",
+      "language": "terraform",
+      "org": "metrics",
+      "git_url": "https://github.groupondev.com/metrics/grafana-terraform",
+      "branch": "main",
+      "tags": ["grafana", "terraform", "dashboards", "alerting"]
+    },
+    {
+      "name": "flux-manifests-main",
+      "domain": "monitoring",
+      "description": "FluxCD GitOps manifests for monitoring stack deployments.",
+      "language": "yaml",
+      "org": "metrics",
+      "git_url": "https://github.groupondev.com/metrics/flux-manifests",
+      "branch": "main",
+      "tags": ["flux", "gitops", "kubernetes"]
+    },
+    {
+      "name": "scrape-configs-main",
+      "domain": "monitoring",
+      "description": "Prometheus scrape configurations for all monitored services.",
+      "language": "yaml",
+      "org": "metrics",
+      "git_url": "https://github.groupondev.com/metrics/scrape-configs",
+      "branch": "main",
+      "tags": ["prometheus", "scrape", "targets"]
+    },
+    {
+      "name": "eck-infra-main",
+      "domain": "logging",
+      "description": "ECK infrastructure — Elasticsearch on Kubernetes cluster definitions.",
+      "language": "yaml",
+      "org": "logging",
+      "git_url": "https://github.groupondev.com/logging/eck-infra",
+      "branch": "main",
+      "tags": ["eck", "elasticsearch", "kubernetes", "infrastructure"]
+    },
+    {
+      "name": "eck-operator-main",
+      "domain": "logging",
+      "description": "ECK operator deployment and configuration for managing ES clusters.",
+      "language": "yaml",
+      "org": "logging",
+      "git_url": "https://github.groupondev.com/logging/eck-operator",
+      "branch": "main",
+      "tags": ["eck", "operator", "elasticsearch"]
+    },
+    {
+      "name": "eck-pipeline-automation-main",
+      "domain": "logging",
+      "description": "Automated pipeline management for ECK lifecycle operations.",
+      "language": "python",
+      "org": "logging",
+      "git_url": "https://github.groupondev.com/logging/eck-pipeline-automation",
+      "branch": "main",
+      "tags": ["eck", "automation", "pipeline"]
+    },
+    {
+      "name": "es-index-creation-main",
+      "domain": "logging",
+      "description": "Elasticsearch index lifecycle management — creation, rollover, retention.",
+      "language": "python",
+      "org": "logging",
+      "git_url": "https://github.groupondev.com/logging/es-index-creation",
+      "branch": "main",
+      "tags": ["elasticsearch", "index", "lifecycle"]
+    },
+    {
+      "name": "es-template-checker-main",
+      "domain": "logging",
+      "description": "Validates Elasticsearch index templates against standards.",
+      "language": "python",
+      "org": "logging",
+      "git_url": "https://github.groupondev.com/logging/es-template-checker",
+      "branch": "main",
+      "tags": ["elasticsearch", "templates", "validation"]
+    },
+    {
+      "name": "grpn-filebeat-main",
+      "domain": "logging",
+      "description": "Groupon's Filebeat configuration and deployment for log shipping.",
+      "language": "yaml",
+      "org": "logging",
+      "git_url": "https://github.groupondev.com/logging/grpn-filebeat",
+      "branch": "main",
+      "tags": ["filebeat", "log-shipping", "agents"]
+    },
+    {
+      "name": "logging-elasticstack-eck-roles",
+      "domain": "logging",
+      "description": "IAM roles and RBAC for the ECK Elastic stack.",
+      "language": "yaml",
+      "org": "logging",
+      "git_url": "https://github.groupondev.com/logging/logging-elasticstack-eck-roles",
+      "branch": "main",
+      "tags": ["iam", "rbac", "eck", "security"]
+    },
+    {
+      "name": "logging-gcp-terrabase-main",
+      "domain": "logging",
+      "description": "Terraform for logging GCP infrastructure (GKE, storage, networking).",
+      "language": "terraform",
+      "org": "logging",
+      "git_url": "https://github.groupondev.com/logging/logging-gcp-terrabase",
+      "branch": "main",
+      "tags": ["terraform", "gcp", "infrastructure"]
+    },
+    {
+      "name": "logging-searches-master",
+      "domain": "logging",
+      "description": "Saved Kibana searches, visualizations, and dashboards.",
+      "language": "json",
+      "org": "logging",
+      "git_url": "https://github.groupondev.com/logging/logging-searches",
+      "branch": "master",
+      "tags": ["kibana", "searches", "dashboards"]
+    },
+    {
+      "name": "watch-execution-main",
+      "domain": "logging",
+      "description": "Elasticsearch watcher execution management for automated responses.",
+      "language": "python",
+      "org": "logging",
+      "git_url": "https://github.groupondev.com/logging/watch-execution",
+      "branch": "main",
+      "tags": ["elasticsearch", "watcher", "automation"]
+    },
+    {
+      "name": "jenkins-main-production-master",
+      "domain": "jenkins",
+      "description": "Production Jenkins controller configuration and management.",
+      "language": "groovy",
+      "org": "cloud-jenkins",
+      "git_url": "https://github.groupondev.com/cloud-jenkins/jenkins-main-production",
+      "branch": "master",
+      "tags": ["jenkins", "production", "controller"]
+    },
+    {
+      "name": "jenkins-main-staging-master",
+      "domain": "jenkins",
+      "description": "Staging Jenkins controller configuration and management.",
+      "language": "groovy",
+      "org": "cloud-jenkins",
+      "git_url": "https://github.groupondev.com/cloud-jenkins/jenkins-main-staging",
+      "branch": "master",
+      "tags": ["jenkins", "staging", "controller"]
+    },
+    {
+      "name": "java-pipeline-dsl-master",
+      "domain": "jenkins",
+      "description": "Jenkins pipeline DSL library for Java services.",
+      "language": "groovy",
+      "org": "cloud-jenkins",
+      "git_url": "https://github.groupondev.com/cloud-jenkins/java-pipeline-dsl",
+      "branch": "master",
+      "tags": ["jenkins", "pipeline", "dsl", "java"]
+    },
+    {
+      "name": "ruby-pipeline-dsl-master",
+      "domain": "jenkins",
+      "description": "Jenkins pipeline DSL library for Ruby services.",
+      "language": "groovy",
+      "org": "cloud-jenkins",
+      "git_url": "https://github.groupondev.com/cloud-jenkins/ruby-pipeline-dsl",
+      "branch": "master",
+      "tags": ["jenkins", "pipeline", "dsl", "ruby"]
+    },
+    {
+      "name": "itier-pipeline-dsl-main",
+      "domain": "jenkins",
+      "description": "Jenkins pipeline DSL for iTier services.",
+      "language": "groovy",
+      "org": "cloud-jenkins",
+      "git_url": "https://github.groupondev.com/cloud-jenkins/itier-pipeline-dsl",
+      "branch": "main",
+      "tags": ["jenkins", "pipeline", "dsl", "itier"]
+    },
+    {
+      "name": "dsl-util-library-master",
+      "domain": "jenkins",
+      "description": "Shared utility functions used across all Jenkins pipeline DSLs.",
+      "language": "groovy",
+      "org": "cloud-jenkins",
+      "git_url": "https://github.groupondev.com/cloud-jenkins/dsl-util-library",
+      "branch": "master",
+      "tags": ["jenkins", "dsl", "shared-library", "utilities"]
+    },
+    {
+      "name": "cloudjenkins-build-plugin-master",
+      "domain": "jenkins",
+      "description": "Custom Jenkins build plugin with Groupon-specific build steps.",
+      "language": "java",
+      "org": "cloud-jenkins",
+      "git_url": "https://github.groupondev.com/cloud-jenkins/cloudjenkins-build-plugin",
+      "branch": "master",
+      "tags": ["jenkins", "plugin", "build"]
+    },
+    {
+      "name": "agent-ami-master",
+      "domain": "jenkins",
+      "description": "Jenkins build agent AMI definitions (Packer).",
+      "language": "hcl",
+      "org": "cloud-jenkins",
+      "git_url": "https://github.groupondev.com/cloud-jenkins/agent-ami",
+      "branch": "master",
+      "tags": ["jenkins", "ami", "agents", "packer"]
+    },
+    {
+      "name": "maven-build-env-master",
+      "domain": "jenkins",
+      "description": "Containerized Maven build environment images.",
+      "language": "dockerfile",
+      "org": "cloud-jenkins",
+      "git_url": "https://github.groupondev.com/cloud-jenkins/maven-build-env",
+      "branch": "master",
+      "tags": ["jenkins", "maven", "docker", "build-env"]
+    },
+    {
+      "name": "canary-dockerizedmaven-release-main",
+      "domain": "jenkins",
+      "description": "Canary release pipeline for Dockerized Maven builds.",
+      "language": "groovy",
+      "org": "cloud-jenkins",
+      "git_url": "https://github.groupondev.com/cloud-jenkins/canary-dockerizedmaven-release",
+      "branch": "main",
+      "tags": ["jenkins", "canary", "maven", "release"]
+    },
+    {
+      "name": "terraform-modules-master",
+      "domain": "jenkins",
+      "description": "Terraform modules for Jenkins infrastructure provisioning.",
+      "language": "terraform",
+      "org": "cloud-jenkins",
+      "git_url": "https://github.groupondev.com/cloud-jenkins/terraform-modules",
+      "branch": "master",
+      "tags": ["jenkins", "terraform", "infrastructure"]
+    },
+    {
+      "name": "github_enterprise_config-master",
+      "domain": "github",
+      "description": "GitHub Enterprise Server configuration, policies, and management scripts.",
+      "language": "shell",
+      "org": "rapt",
+      "git_url": "https://github.groupondev.com/rapt/github_enterprise_config",
+      "branch": "master",
+      "tags": ["ghes", "configuration", "enterprise"]
+    },
+    {
+      "name": "github-cloud-arc-main",
+      "domain": "github",
+      "description": "GitHub Actions runner controller — customized ARC Helm charts (v0.13.1). NOT upstream ARC.",
+      "language": "yaml",
+      "org": "rapt",
+      "git_url": "https://github.groupondev.com/rapt/github-cloud-arc",
+      "branch": "main",
+      "tags": ["gha", "runners", "helm", "arc", "kubernetes"]
+    },
+    {
+      "name": "deploybot-master",
+      "domain": "release-engineering",
+      "description": "Deployment authorization service — manages approval workflows for staging→production promotion.",
+      "language": "ruby",
+      "org": "release-engineering",
+      "git_url": "https://github.groupondev.com/release-engineering/deploybot",
+      "branch": "master",
+      "tags": ["deployment", "authorization", "releases"]
+    },
+    {
+      "name": "mergebot-master",
+      "domain": "release-engineering",
+      "description": "Automated merge management for release branches.",
+      "language": "ruby",
+      "org": "release-engineering",
+      "git_url": "https://github.groupondev.com/release-engineering/mergebot",
+      "branch": "master",
+      "tags": ["merge", "automation", "releases"]
+    },
+    {
+      "name": "releasegen-main",
+      "domain": "release-engineering",
+      "description": "Release note generation from PRs, JIRAs, and deployment data. Java/Maven with GraphQL API.",
+      "language": "java",
+      "org": "release-engineering",
+      "git_url": "https://github.groupondev.com/release-engineering/releasegen",
+      "branch": "main",
+      "tags": ["releases", "notes", "graphql", "java"]
+    },
+    {
+      "name": "artifactory-gcp-vm-main",
+      "domain": "artifactory",
+      "description": "Artifactory GCP VM setup — application config, NGINX reverse proxy, bootstrap, migration scripts.",
+      "language": "shell",
+      "org": "artifactory",
+      "git_url": "https://github.groupondev.com/artifactory/artifactory-gcp-vm",
+      "branch": "main",
+      "tags": ["artifactory", "gcp", "vm", "nginx", "migration"]
+    },
+    {
+      "name": "sonarqube-main-gcp-main",
+      "domain": "sonarqube",
+      "description": "SonarQube deployment on GCP.",
+      "language": "shell",
+      "org": "sonarqube",
+      "git_url": "https://github.groupondev.com/sonarqube/sonarqube-main-gcp",
+      "branch": "main",
+      "tags": ["sonarqube", "gcp", "deployment"]
+    },
+    {
+      "name": "sonarqube-main-main",
+      "domain": "sonarqube",
+      "description": "Core SonarQube configuration and quality profiles.",
+      "language": "shell",
+      "org": "sonarqube",
+      "git_url": "https://github.groupondev.com/sonarqube/sonarqube-main",
+      "branch": "main",
+      "tags": ["sonarqube", "configuration", "quality"]
+    },
+    {
+      "name": "sonarqube-terraform-modules-main",
+      "domain": "sonarqube",
+      "description": "Terraform modules for SonarQube infrastructure.",
+      "language": "terraform",
+      "org": "sonarqube",
+      "git_url": "https://github.groupondev.com/sonarqube/sonarqube-terraform-modules",
+      "branch": "main",
+      "tags": ["sonarqube", "terraform", "infrastructure"]
+    }
+  ]
+}

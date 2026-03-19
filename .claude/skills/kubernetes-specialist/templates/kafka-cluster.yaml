@@ -1,0 +1,222 @@
+# Strimzi Kafka Cluster Template — Groupon Conveyor GKE
+# Node pool: kafka-platform (e2-custom-12-65536, 12 vCPU / 64 GB)
+# Taint: type=kafka-platform:NoSchedule
+# Storage: premium-rwo (high IOPS required for Kafka brokers)
+# NOTE: Use this for data-platform Kafka clusters, NOT for Encore event topics
+# (Encore uses GCP Pub/Sub via the Topics abstraction)
+
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: <cluster-name>              # e.g., groupon-kafka, encore-events
+  namespace: <namespace>            # e.g., data-platform, kafka
+  labels:
+    team: <team-name>               # e.g., dnd-ingestion, cicdo
+spec:
+  kafka:
+    version: 3.6.0
+    replicas: 3                     # minimum 3 for production HA; must be odd
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+        authentication:
+          type: tls
+
+    config:
+      # Replication — must match replica count
+      offsets.topic.replication.factor: 3
+      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      default.replication.factor: 3
+      min.insync.replicas: 2
+
+      # Protocol — pin to version; bump deliberately
+      inter.broker.protocol.version: "3.6"
+
+      # Retention — override per-topic via KafkaTopic CRD
+      log.retention.hours: 168     # 7 days default
+      log.retention.bytes: -1      # no size-based retention by default
+
+      # Throughput tuning
+      num.partitions: 12           # default partitions for new topics
+      num.network.threads: 3
+      num.io.threads: 8
+      socket.send.buffer.bytes: 102400
+      socket.receive.buffer.bytes: 102400
+      socket.request.max.bytes: 104857600
+
+    resources:
+      requests:
+        memory: 4Gi
+        cpu: "1"
+      limits:
+        memory: 8Gi                # set limits; OOM kills are hard to debug
+        cpu: "4"
+
+    storage:
+      type: persistent-claim
+      size: 500Gi
+      class: premium-rwo           # high-IOPS for broker storage — do not use standard-rwo
+      deleteClaim: false           # never delete PVCs when cluster is deleted
+
+    # JVM heap — half of container memory limit (8Gi limit → 4Gi heap)
+    jvmOptions:
+      -Xms: 4096m
+      -Xmx: 4096m
+
+    # Schedule on kafka-platform node pool
+    template:
+      pod:
+        tolerations:
+          - key: "type"
+            operator: "Equal"
+            value: "kafka-platform"
+            effect: "NoSchedule"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: cloud.google.com/gke-nodepool
+                      operator: In
+                      values:
+                        - kafka-platform
+          # Spread brokers across availability zones (us-central1-a/c/f)
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchLabels:
+                    strimzi.io/name: <cluster-name>-kafka
+                topologyKey: topology.kubernetes.io/zone
+        securityContext:
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: kafka-metrics
+          key: kafka-metrics-config.yml
+
+  zookeeper:
+    replicas: 3
+    resources:
+      requests:
+        memory: 2Gi
+        cpu: "500m"
+      limits:
+        memory: 4Gi
+        cpu: "1"
+    storage:
+      type: persistent-claim
+      size: 20Gi
+      class: premium-rwo
+      deleteClaim: false
+    template:
+      pod:
+        tolerations:
+          - key: "type"
+            operator: "Equal"
+            value: "kafka-platform"
+            effect: "NoSchedule"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: cloud.google.com/gke-nodepool
+                      operator: In
+                      values:
+                        - kafka-platform
+
+  entityOperator:
+    topicOperator: {}    # manages KafkaTopic CRDs
+    userOperator: {}     # manages KafkaUser CRDs
+
+---
+# KafkaTopic Template — create one per logical topic
+# Apply: kubectl apply -f topic-<name>.yaml -n <namespace>
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: <topic-name>               # e.g., deals.created, orders.updated
+  namespace: <namespace>
+  labels:
+    strimzi.io/cluster: <cluster-name>
+spec:
+  partitions: 6                    # size for throughput; scale up but not down
+  replicas: 3                      # must not exceed broker count
+  config:
+    retention.ms: "604800000"      # 7 days (168h) in ms; override as needed
+    min.insync.replicas: "2"       # must write to 2 of 3 replicas
+    cleanup.policy: delete         # use 'compact' for changelog topics
+
+---
+# KafkaUser (TLS auth) — one per consuming service
+# Apply: kubectl apply -f user-<service>.yaml -n <namespace>
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: <service-name>-user
+  namespace: <namespace>
+  labels:
+    strimzi.io/cluster: <cluster-name>
+spec:
+  authentication:
+    type: tls
+  authorization:
+    type: simple
+    acls:
+      # Consumer group — read from topic
+      - resource:
+          type: group
+          name: <service-name>-consumer-group
+        operation: Read
+      - resource:
+          type: topic
+          name: <topic-name>
+          patternType: literal
+        operation: Read
+      # Producer — write to topic (remove if consumer-only)
+      - resource:
+          type: topic
+          name: <topic-name>
+          patternType: literal
+        operation: Write
+
+---
+# Kafka Metrics ConfigMap (Prometheus JMX exporter)
+# Required if metricsConfig is set on the Kafka CRD above
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-metrics
+  namespace: <namespace>
+data:
+  kafka-metrics-config.yml: |
+    lowercaseOutputName: true
+    rules:
+      # Consumer group lag — key operational metric
+      - pattern: kafka.server<type=(.+), name=(.+), clientId=(.+), topic=(.+), partition=(.*)><>Value
+        name: kafka_server_$1_$2
+        type: GAUGE
+        labels:
+          clientId: "$3"
+          topic: "$4"
+          partition: "$5"
+      # Under-replicated partitions — should always be 0
+      - pattern: kafka.server<type=ReplicaManager, name=UnderReplicatedPartitions><>Value
+        name: kafka_server_replicamanager_underreplicatedpartitions
+        type: GAUGE
+      # Active controller count — should always be 1
+      - pattern: kafka.controller<type=KafkaController, name=ActiveControllerCount><>Value
+        name: kafka_controller_activecontrollercount
+        type: GAUGE

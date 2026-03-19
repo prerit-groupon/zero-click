@@ -1,0 +1,9 @@
+# GDS Team Members
+# Maps Jira accountId → display name for report readability.
+# To find a member's accountId:
+#   GET https://groupondev.atlassian.net/rest/api/3/user/search?query=<name>
+#   Look for the "accountId" field in the response.
+
+members:
+  - name: "Team Member Name"
+    accountId: "replace-with-jira-account-id"

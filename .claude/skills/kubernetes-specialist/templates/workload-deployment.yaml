@@ -1,0 +1,68 @@
+# Standard GKE Deployment template for Groupon data-platform workloads
+# Replace all <placeholders> with actual values
+# Adjust pool/taint for your target node pool (see references/conveyor-cluster.md)
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <service-name>
+  namespace: data-platform
+  labels:
+    app: <service-name>
+    team: <squad-name>
+    version: "1.0.0"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: <service-name>
+  template:
+    metadata:
+      labels:
+        app: <service-name>
+        team: <squad-name>
+    spec:
+      serviceAccountName: <service-name>-sa   # Must have Workload Identity annotation
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 2000
+      # Schedule on kafka-platform pool — change taint/nodeSelector for other pools
+      tolerations:
+        - key: "type"
+          operator: "Equal"
+          value: "kafka-platform"
+          effect: "NoSchedule"
+      nodeSelector:
+        node_pool: kafka-platform
+      containers:
+        - name: <service-name>
+          image: gcr.io/groupon-prod/<service-name>:1.0.0   # Never use 'latest'
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          envFrom:
+            - secretRef:
+                name: <service-name>-secrets

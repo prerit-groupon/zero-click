@@ -1,0 +1,13 @@
+# CICDO Team Epics
+# Add one entry per epic you want tracked in the weekly report.
+# ktlo: true  — marks this as a Keep The Lights On epic (triggers KTLO-specific analysis)
+# ktlo: false — standard feature/project epic
+
+epics:
+  - key: CICDO-XXXX
+    name: "Example: Q1 CI/CD Platform Improvements"
+    ktlo: false
+
+  - key: CICDO-XXXX
+    name: "Example: KTLO — CI/CD Infrastructure Maintenance"
+    ktlo: true

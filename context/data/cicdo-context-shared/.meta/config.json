@@ -1,0 +1,38 @@
+{
+  "team": "CICDO",
+  "org": "Groupon",
+  "description": "CI/CD & Observability Platform Team — Shared Engineering Context",
+  "owner": "Prerit Munjal",
+  "email": "pmunjal@groupon.com",
+  "audience": "all-engineering",
+  "domains": [
+    "monitoring",
+    "logging",
+    "jenkins",
+    "github",
+    "artifactory",
+    "release-engineering",
+    "sonarqube"
+  ],
+  "preferences": {
+    "default_cloud": "GCP",
+    "container_orchestration": "GKE/Kubernetes",
+    "source_control": "GitHub Enterprise Server (GHES)",
+    "ci_system": "Jenkins + GitHub Actions",
+    "monitoring_stack": "Telegraf → Kafka → CLAM → Thanos → Grafana",
+    "logging_stack": "Filebeat → Kafka → Logstash → Elasticsearch → Kibana",
+    "alerting": "PagerDuty + Grafana Alerts"
+  },
+  "context_type": "shared",
+  "includes_source_code": false,
+  "context_version": "2.0.0",
+  "created": "2026-03-18",
+  "last_updated": "2026-03-18",
+  "self_improvement": {
+    "observe": "Log every significant interaction in observations/log.jsonl",
+    "inspect": "Review observations weekly for recurring failures or gaps",
+    "amend": "Update gotchas, runbooks, or routing rules based on evidence",
+    "evaluate": "Score changes using scoring/criteria.md. Revert if no improvement.",
+    "cycle": "observe → inspect → amend → evaluate → repeat"
+  }
+}

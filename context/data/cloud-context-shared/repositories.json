@@ -1,0 +1,409 @@
+{
+  "schema_version": "2.0",
+  "workspace": "cloud-ai-root",
+  "description": "Manifest of all repositories in the Groupon cloud infrastructure workspace",
+  "repositories": [
+    {
+      "name": "gcp-landingzone",
+      "category": "cloud-foundation",
+      "description": "GCP organization baseline — folder hierarchy, project provisioning (~271 projects), IAM, shared VPC, firewall rules, central service accounts, and org policies for the Engineering org",
+      "cloud_providers": ["gcp"],
+      "technologies": ["terraform", "terragrunt", "python", "github-actions", "jenkins", "docker", "tflint"],
+      "dependencies": [],
+      "ai_entrypoint": "AI_OVERVIEW.md",
+      "key_paths": {
+        "modules": "modules/",
+        "environments": "envs/",
+        "foundation": "modules/gcp-foundation/",
+        "project_factory": "modules/project-factory/",
+        "iam": "modules/iam/",
+        "pipelines": ".github/workflows/gcp-deploy.yml",
+        "scripts": "bin/"
+      },
+      "typical_tasks": [
+        "Provision a new GCP project using the project factory",
+        "Add or modify IAM bindings for a service",
+        "Update shared VPC firewall rules",
+        "Create a new folder in the GCP org hierarchy",
+        "Add a central service account",
+        "Modify org-level policies"
+      ]
+    },
+    {
+      "name": "terraform-gcp-core",
+      "category": "infrastructure-networking",
+      "description": "GCP networking for Conveyor and Hybrid Boundary — dedicated VPCs, subnets, VPC peering with shared VPCs, Cloud Router, NAT, firewall rules, private DNS zones, and billing budgets",
+      "cloud_providers": ["gcp"],
+      "technologies": ["terraform", "terragrunt", "terrabase"],
+      "dependencies": ["gcp-landingzone"],
+      "ai_entrypoint": "AI_OVERVIEW.md",
+      "key_paths": {
+        "modules": "modules/",
+        "environments": "envs/",
+        "vpc": "modules/vpc/",
+        "firewall": "modules/fw-rule/",
+        "dns": "modules/dns/"
+      },
+      "typical_tasks": [
+        "Add or modify Conveyor VPC subnets",
+        "Update firewall rules for edge-proxy or health checks",
+        "Add private DNS peering zone",
+        "Create a new region deployment",
+        "Add billing budget alerts"
+      ]
+    },
+    {
+      "name": "conveyor_k8s",
+      "category": "kubernetes-platform",
+      "description": "Conveyor Kubernetes Service — full lifecycle management of EKS (AWS) and GKE (GCP) clusters, 50+ Ansible roles for platform service provisioning, cluster promotion, and AMI baking",
+      "cloud_providers": ["aws", "gcp"],
+      "technologies": ["terraform", "terragrunt", "ansible", "go", "python", "packer", "jenkins", "github-actions", "docker", "kubernetes", "opa"],
+      "dependencies": ["gcp-landingzone", "terraform-gcp-core"],
+      "ai_entrypoint": "AI_OVERVIEW.md",
+      "key_paths": {
+        "ansible_playbooks": "conveyor_provisioning_playbook/",
+        "ansible_roles": "conveyor_provisioning_playbook/roles/",
+        "eks_terraform": "terra-eks/",
+        "gke_terraform": "terra-gke/",
+        "pipelines_jenkins": "pipelines/",
+        "pipelines_github": ".github/workflows/",
+        "go_utilities": "conveyor-pipeline-utils/",
+        "ami_baking": "machine-image-baking/"
+      },
+      "typical_tasks": [
+        "Add or modify an Ansible role for platform services",
+        "Change EKS or GKE Terraform configuration",
+        "Update cluster manifests for a specific environment or region",
+        "Promote a cluster across environments",
+        "Bake a new AMI for EKS nodes"
+      ]
+    },
+    {
+      "name": "hybrid-boundary",
+      "category": "service-mesh",
+      "description": "AWS edge proxy infrastructure — Envoy-based Go agent on EC2 generating config via xDS (go-control-plane), Lambda functions (API, DNS, service discovery, traffic shifting), DynamoDB service registry, Step Functions for orchestrated migration. HCM CodecType: AUTO (HTTP/1.1 and HTTP/2 via ALPN downstream); upstream clusters default to HTTP/1.1.",
+      "cloud_providers": ["aws"],
+      "technologies": ["go", "terraform", "terragrunt", "ansible", "packer", "aws-lambda", "dynamodb", "route53", "envoy", "jenkins"],
+      "dependencies": ["gcp-landingzone", "service-fetcher"],
+      "ai_entrypoint": "AI_OVERVIEW.md",
+      "key_paths": {
+        "agent": "agent/",
+        "lambdas": "agent/lambda/",
+        "api": "agent/lambda-api/",
+        "terraform": "terraform/",
+        "packer": "packer/"
+      },
+      "typical_tasks": [
+        "Add or modify Lambda functions",
+        "Update Terraform for edge proxies, ELB, or API Gateway",
+        "Modify Envoy configuration or agent behavior",
+        "Bake AMIs with Packer",
+        "Deploy to sandbox, staging, or production"
+      ]
+    },
+    {
+      "name": "hybrid-boundary-gcp",
+      "category": "service-mesh",
+      "description": "GCP edge proxy infrastructure — Envoy-based Go agent on GCE generating config via xDS (go-control-plane), Cloud Functions (API, DNS handler, traffic shifting), Firestore service registry, Cloud Workflows for orchestrated migration. Same xDS architecture as hybrid-boundary.",
+      "cloud_providers": ["gcp"],
+      "technologies": ["go", "terraform", "terrabase", "ansible", "packer", "cloud-functions", "firestore", "cloud-dns", "envoy", "jenkins"],
+      "dependencies": ["gcp-landingzone", "terraform-gcp-core", "service-fetcher"],
+      "ai_entrypoint": "AI_OVERVIEW.md",
+      "key_paths": {
+        "agent": "agent/",
+        "cloud_functions": "agent/dns-handler/",
+        "api": "agent/lambda-api/",
+        "terraform": "terraform-gcp/",
+        "packer": "packer/"
+      },
+      "typical_tasks": [
+        "Add or modify Cloud Functions",
+        "Update Terraform for edge proxies, Firestore, or Cloud DNS",
+        "Modify Envoy configuration or agent behavior",
+        "Bake GCP images with Packer",
+        "Deploy to dev, stable, or production"
+      ]
+    },
+    {
+      "name": "hybrid-boundary-controller",
+      "category": "platform-controller",
+      "description": "Kubernetes operator that reconciles HybridBoundaryUpstream CRDs — creates Internal LoadBalancer services (ILB IPs on HB subnet) on both AWS and GCP, optionally creates Istio VirtualServices in gateway mode, and registers endpoints with the Hybrid Boundary API. Manages ~422 HBU objects in production GKE (306 HTTP, 116 HTTPS, ~16 in public namespace).",
+      "cloud_providers": ["aws", "gcp"],
+      "technologies": ["go", "kubebuilder", "controller-runtime", "istio", "kubernetes", "docker", "kustomize", "jenkins"],
+      "dependencies": ["hybrid-boundary", "hybrid-boundary-gcp"],
+      "ai_entrypoint": "AI_OVERVIEW.md",
+      "key_paths": {
+        "api_types": "api/v1/",
+        "controllers": "controllers/",
+        "hb_api_client": "internal/hbapi/",
+        "cli": "cmd/hbctl/",
+        "k8s_manifests": "config/"
+      },
+      "typical_tasks": [
+        "Update HybridBoundaryUpstream CRD types",
+        "Add or modify reconciliation logic",
+        "Change Hybrid Boundary API client behavior",
+        "Update admission webhook validation rules",
+        "Generate CRD manifests with make manifests"
+      ]
+    },
+    {
+      "name": "service-fetcher",
+      "category": "service-mesh",
+      "description": "Lightweight Go service for Kubernetes service discovery — returns ClusterIP for a given service name, called by Hybrid Boundary Lambdas and Cloud Functions",
+      "cloud_providers": ["aws", "gcp"],
+      "technologies": ["go", "kubernetes"],
+      "dependencies": ["conveyor_k8s"],
+      "ai_entrypoint": "AI_OVERVIEW.md",
+      "key_paths": {
+        "source": "app/main.go"
+      },
+      "typical_tasks": [
+        "Modify service lookup endpoints",
+        "Update Kubernetes client libraries",
+        "Change health check behavior"
+      ]
+    },
+    {
+      "name": "par-automation",
+      "category": "service-mesh",
+      "description": "Policy Access Request automation — evaluates PAR requests against data classification rules (C1-C3, SOX, PCI), auto-approves or creates Jira tickets, and applies approved policies to Hybrid Boundary",
+      "cloud_providers": ["gcp"],
+      "technologies": ["go", "docker", "helm", "krane", "jenkins"],
+      "dependencies": ["hybrid-boundary-controller", "hybrid-boundary-gcp", "cmf-helm-charts"],
+      "ai_entrypoint": "AI_OVERVIEW.md",
+      "key_paths": {
+        "par_logic": "agent/par-automation/main.go",
+        "hb_client": "agent/hybrid-boundary/main.go",
+        "jira_client": "agent/jira/main.go",
+        "deployment": ".meta/deployment/cloud/"
+      },
+      "typical_tasks": [
+        "Modify PAR approval rules",
+        "Change Hybrid Boundary API integration",
+        "Update Jira or Service Portal integration",
+        "Adjust deployment configuration per region"
+      ]
+    },
+    {
+      "name": "mtls-sidecar",
+      "category": "service-mesh",
+      "description": "Envoy-based mTLS sidecar for Hybrid Boundary — init container configures iptables traffic interception, Envoy proxy terminates mutual TLS with HB edge proxies using cert-manager certificates. HTTP/2 opt-in via SIDECAR_ENABLE_HTTP2 (outbound to HB) and SIDECAR_ENABLE_INTERNAL_HTTP2 (inbound to app), both default false. Downstream TLS listeners advertise h2,http/1.1 via ALPN.",
+      "cloud_providers": ["aws", "gcp"],
+      "technologies": ["envoy", "jsonnet", "docker", "iptables", "python", "jenkins"],
+      "dependencies": ["hybrid-boundary", "hybrid-boundary-gcp", "cmf-helm-charts", "conveyor_k8s"],
+      "ai_entrypoint": "AI_OVERVIEW.md",
+      "key_paths": {
+        "traffic_interceptor": "traffic-interceptor/",
+        "envoy_config": "traffic-interceptor/var/envoy/envoy.yaml.jsonnet",
+        "iptables": "traffic-interceptor/bin/intercept-hb-traffic.sh",
+        "envoy_container": "envoy/",
+        "tests": "traffic-interceptor/test/"
+      },
+      "typical_tasks": [
+        "Modify Envoy proxy configuration (TLS, circuit breaking, timeouts)",
+        "Add new environment variable support for sidecar behavior",
+        "Update iptables interception rules",
+        "Change TLS cipher suites or protocol versions",
+        "Update Envoy base image version",
+        "Debug traffic interception or certificate issues"
+      ]
+    },
+    {
+      "name": "api-proxy",
+      "category": "routing-proxy",
+      "description": "Central Java Vert.x proxy for API and web traffic — routes requests by realm and path, handles client identification and rate limiting via Redis. Deployed in two contexts: (1) within the routing-service pod alongside nginx (managed by routing-deployment, no mTLS sidecar), and (2) as a standalone deployment with HBU and mTLS sidecar (managed by cmf-helm-charts). In the routing-service pod, connects to backends via HBU ILB IPs over HTTP/1.1.",
+      "cloud_providers": ["aws", "gcp"],
+      "technologies": ["java", "vertx", "maven", "docker", "redis", "jenkins"],
+      "dependencies": ["proxy-config", "routing-config-production", "routing-config-staging"],
+      "ai_entrypoint": "AI_OVERVIEW.md",
+      "key_paths": {
+        "core": "proxy-core/",
+        "app": "proxy-app/",
+        "shared": "proxy-shared/",
+        "config": "proxy-app/src/main/conf/"
+      },
+      "typical_tasks": [
+        "Add or change routing logic",
+        "Modify rate limiting behavior",
+        "Add client identification rules",
+        "Update proxy configuration defaults"
+      ]
+    },
+    {
+      "name": "proxy-config",
+      "category": "routing-config",
+      "description": "JSON configuration for api-proxy — verticle deployment, proxy settings, realms, destinations, and routing config paths for both on-prem and K8s environments",
+      "cloud_providers": ["aws", "gcp"],
+      "technologies": ["json", "docker", "kustomize", "fabric", "jenkins"],
+      "dependencies": ["routing-deployment"],
+      "ai_entrypoint": "AI_OVERVIEW.md",
+      "key_paths": {
+        "configs": "conf/",
+        "k8s_configs": "conf/k8s/",
+        "ci": ".ci/"
+      },
+      "typical_tasks": [
+        "Add or change realm configuration",
+        "Modify proxy behavior settings",
+        "Update verticle scaling parameters",
+        "Deploy config updates to environments"
+      ]
+    },
+    {
+      "name": "routing-config-production",
+      "category": "routing-config",
+      "description": "Production routing rules in Grout .flexi DSL — per-application route definitions, per-country host configs, and layer includes for all production traffic",
+      "cloud_providers": ["aws", "gcp"],
+      "technologies": ["groovy", "python", "jinja2", "gradle", "docker", "kustomize", "jenkins"],
+      "dependencies": ["routing-deployment"],
+      "ai_entrypoint": "AI_OVERVIEW.md",
+      "key_paths": {
+        "routes": "src/",
+        "applications": "src/applications/",
+        "hosts": "src/hosts/",
+        "layers": "src/layers/",
+        "ci": ".ci/"
+      },
+      "typical_tasks": [
+        "Add or modify application routes",
+        "Add country-specific routing layers",
+        "Update host configurations",
+        "Validate routing with gradlew validate"
+      ]
+    },
+    {
+      "name": "routing-config-staging",
+      "category": "routing-config",
+      "description": "Staging routing rules in Grout .flexi DSL — mirrors production structure with additional experimental routes, used for validating changes before production deployment",
+      "cloud_providers": ["aws", "gcp"],
+      "technologies": ["groovy", "python", "jinja2", "gradle", "docker", "kustomize", "jenkins"],
+      "dependencies": ["routing-deployment"],
+      "ai_entrypoint": "AI_OVERVIEW.md",
+      "key_paths": {
+        "routes": "src/",
+        "applications": "src/applications/",
+        "hosts": "src/hosts/",
+        "layers": "src/layers/",
+        "ci": ".ci/"
+      },
+      "typical_tasks": [
+        "Test new routing rules before production",
+        "Add experimental application routes",
+        "Validate staging-specific host configs"
+      ]
+    },
+    {
+      "name": "web-config",
+      "category": "routing-config",
+      "description": "Nginx configuration generator (also called Grout in routing context) — Mustache templates rendered from YAML data for virtual hosts, rewrites, access control, and error pages. nginx listens on 443 with TLS and proxies to api-proxy on localhost:9000 using proxy_http_version 1.1. Includes Go tool for Jira redirect automation.",
+      "cloud_providers": ["aws", "gcp"],
+      "technologies": ["python", "go", "mustache", "yaml", "fabric", "docker", "kustomize", "jenkins", "scala"],
+      "dependencies": ["routing-deployment"],
+      "ai_entrypoint": "AI_OVERVIEW.md",
+      "key_paths": {
+        "data": "data/",
+        "templates": "templates/",
+        "generator": "generator/",
+        "redirect_tool": "go/redirect-requests/",
+        "ci": ".ci/"
+      },
+      "typical_tasks": [
+        "Add or modify virtual host definitions",
+        "Update nginx rewrite rules",
+        "Process redirect Jira tickets",
+        "Change nginx template behavior",
+        "Deploy config to on-prem or cloud"
+      ]
+    },
+    {
+      "name": "routing-deployment",
+      "category": "routing-deployment",
+      "description": "Kustomize-based Kubernetes deployment for the routing service stack — combines api-proxy, proxy-config, routing-config, and web-config into a single pod (4 init containers + 6 runtime containers: nginx, api-proxy, telegraf, logstash-kafka-forwarder, logstash-canary, filebeat). Exposed via Internal LoadBalancer restricted to HB subnet. Receives public traffic from CDN via HB edge proxy.",
+      "cloud_providers": ["aws", "gcp"],
+      "technologies": ["kustomize", "kubernetes", "jenkins", "deploybot"],
+      "dependencies": ["api-proxy", "proxy-config", "routing-config-production", "routing-config-staging", "web-config"],
+      "ai_entrypoint": "AI_OVERVIEW.md",
+      "key_paths": {
+        "base": "base/",
+        "overlays": "overlays/",
+        "deploy_bot": ".deploy_bot.yml"
+      },
+      "typical_tasks": [
+        "Update image tags for routing components",
+        "Add a new region overlay",
+        "Modify deployment spec or resource limits",
+        "Debug deployment differences between environments"
+      ]
+    },
+    {
+      "name": "cmf-helm-charts",
+      "category": "application-deployment",
+      "description": "Cloud Migration Factory Helm charts — standard packaging for Groupon services on Kubernetes with charts for generic, Java, JTier, Rails, and I-Tier workloads. Emits HybridBoundaryUpstream CRDs",
+      "cloud_providers": ["aws", "gcp"],
+      "technologies": ["helm", "kubernetes", "jenkins", "opa", "docker"],
+      "dependencies": ["hybrid-boundary-controller"],
+      "ai_entrypoint": "AI_OVERVIEW.md",
+      "key_paths": {
+        "common_library": "common/",
+        "generic_charts": "generic/components/",
+        "java_charts": "java/components/",
+        "jtier_charts": "jtier/components/",
+        "rails_charts": "ruby_on_rails/components/",
+        "itier_chart": "itier/",
+        "tests": "test/",
+        "ci": "bin/"
+      },
+      "typical_tasks": [
+        "Add or modify shared templates in common library",
+        "Update default values for charts",
+        "Add new Kubernetes resource types",
+        "Modify HybridBoundaryUpstream template",
+        "Cut a new chart release"
+      ]
+    },
+    {
+      "name": "hybrid-boundary-ui",
+      "category": "service-mesh",
+      "description": "Angular web application providing self-service management of Hybrid Boundary — traffic management, endpoint configuration, and policy access requests",
+      "cloud_providers": ["aws", "gcp"],
+      "technologies": ["angular", "typescript", "html", "css"],
+      "dependencies": ["par-automation"],
+      "ai_entrypoint": "AI_OVERVIEW.md",
+      "key_paths": {
+        "source": "src/",
+        "app": "src/app/"
+      },
+      "typical_tasks": [
+        "Add or modify UI components for HB management",
+        "Update PAR request submission flow",
+        "Improve traffic visualization",
+        "Fix UI bugs"
+      ]
+    },
+    {
+      "name": "cloud-ai-root",
+      "category": "ai-coordination",
+      "description": "AI coordination layer — architecture documentation, repository manifest, dependency graph, routing rules, runbooks, and Cursor workspace configuration for multi-repository AI agent navigation",
+      "cloud_providers": [],
+      "technologies": ["markdown", "json", "cursor-rules"],
+      "dependencies": [],
+      "key_paths": {
+        "architecture": "ARCHITECTURE.md",
+        "repository_manifest": "repositories.json",
+        "dependency_graph": "DEPENDENCY_GRAPH.md",
+        "routing_rules": "AGENT_ROUTING_RULES.md",
+        "usage_guide": "AI_USAGE_GUIDE.md",
+        "runbooks": "runbooks/",
+        "cursor_rules": ".cursor/rules/",
+        "claude_code": "CLAUDE.md"
+      },
+      "typical_tasks": [
+        "Update architecture documentation after infrastructure changes",
+        "Add new repositories to the manifest",
+        "Refine AI agent routing rules",
+        "Add runbooks for new incident types"
+      ]
+    }
+  ]
+}

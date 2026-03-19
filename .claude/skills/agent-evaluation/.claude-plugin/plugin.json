@@ -1,0 +1,27 @@
+{
+  "name": "agent-evaluation",
+  "version": "1.0.0",
+  "description": "Evaluate spawned agent outputs using LLM-as-judge patterns, rubric scoring, and constraint satisfaction checks. For Groupon's Encore/Continuum/Data platform contexts.",
+  "category": "quality",
+  "tags": ["agent", "evaluation", "llm-as-judge", "rubric", "quality-gate", "multi-agent"],
+  "skill": "skills/agent-evaluation/SKILL.md",
+  "references": [
+    "references/llm-judge-patterns.md",
+    "references/rubric-design.md",
+    "references/evaluation-criteria.md"
+  ],
+  "templates": [
+    "templates/rubric.md",
+    "templates/eval-report.md"
+  ],
+  "scripts": [
+    "scripts/evaluate.py"
+  ],
+  "examples": [
+    "examples/encore-agent-eval.md"
+  ],
+  "compatible_with": ["claude-code"],
+  "install_path": ".claude/skills/agent-evaluation",
+  "author": "zero-click workspace",
+  "license": "internal"
+}

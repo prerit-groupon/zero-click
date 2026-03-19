@@ -1,0 +1,17 @@
+{
+  "name": "compound-engineering",
+  "version": "1.0.0",
+  "description": "Quality-compounding development cycle: plan → work → review → compound. 80% planning/review, 20% coding. Prevents tech debt by design.",
+  "category": "workflow",
+  "tags": ["planning", "code-review", "git-worktree", "atomic-commits", "adr", "lessons-learned"],
+  "skill": "SKILL.md",
+  "references": [
+    "references/git-worktree-guide.md"
+  ],
+  "templates": ["templates/feature-plan.md", "templates/adr.md", "templates/review-report.md"],
+  "examples": ["examples/encore-service-feature.md"],
+  "compatible_with": ["claude-code"],
+  "install_path": ".claude/skills/compound-engineering",
+  "author": "zero-click workspace",
+  "license": "internal"
+}

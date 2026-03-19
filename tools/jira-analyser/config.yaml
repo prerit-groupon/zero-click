@@ -1,0 +1,30 @@
+# Jira Weekly Report — Global Config
+
+jira:
+  base_url: "https://groupondev.atlassian.net"
+  credentials_file: "tools/jira/.env"
+
+report:
+  output_dir: "tools/jira-analyser/results"
+  # Teams to include in the weekly report (order controls report section order)
+  teams:
+    - CICDO
+    - GDS
+    - Cloud
+    - AIOps
+    - SRE
+
+analysis:
+  # Tickets with no update older than this are "stuck"
+  stuck_threshold_days: 7
+  # KTLO outlier threshold: tickets older than (avg_age × multiplier) are flagged
+  ktlo_outlier_multiplier: 2
+  # Statuses to exclude from all analysis
+  excluded_statuses:
+    - "Won't Do"
+    - "Cancelled"
+  # Statuses considered "done" (excluded from stuck/unassigned counts)
+  done_statuses:
+    - "Done"
+    - "Closed"
+    - "Resolved"

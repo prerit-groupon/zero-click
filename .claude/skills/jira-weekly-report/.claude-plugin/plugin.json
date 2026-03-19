@@ -1,0 +1,19 @@
+{
+  "name": "jira-weekly-report",
+  "version": "1.0.0",
+  "description": "Weekly Jira epic health report for all 5 Groupon Platform Engineering teams (CICDO, GDS, Cloud, AIOps, SRE). Stuck tickets, new tickets, blockers, KTLO analysis, assignee distribution. Output: dated .md snapshot in tools/jira-analyser/results/YYYY-MM-DD/.",
+  "category": "project-management",
+  "tags": ["jira", "weekly-report", "epic-health", "ktlo", "stuck-tickets", "platform-engineering", "cicdo", "gds", "cloud", "aiops", "sre"],
+  "skill": "SKILL.md",
+  "references": [],
+  "templates": [
+    "templates/report-format.md"
+  ],
+  "examples": [
+    "examples/sample-report.md"
+  ],
+  "compatible_with": ["claude-code"],
+  "install_path": ".claude/skills/jira-weekly-report",
+  "author": "zero-click workspace",
+  "license": "internal"
+}

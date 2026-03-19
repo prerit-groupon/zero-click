@@ -1,0 +1,19 @@
+{
+  "name": "skill-creator",
+  "version": "1.0.0",
+  "description": "Create and iteratively improve Claude skills for the zero-click workspace. Covers writing SKILL.md files, plugin.json manifests, references, templates, examples, and evaluation workflows. Always checks existing skill inventory for overlap before building a new skill.",
+  "category": "meta",
+  "tags": ["skill-authoring", "skill-evaluation", "plugin-structure", "meta", "workspace-tooling"],
+  "skill": "SKILL.md",
+  "references": [],
+  "templates": [
+    "templates/SKILL.md"
+  ],
+  "examples": [
+    "examples/creating-a-skill.md"
+  ],
+  "compatible_with": ["claude-code"],
+  "install_path": ".claude/skills/skill-creator",
+  "author": "zero-click workspace",
+  "license": "internal"
+}

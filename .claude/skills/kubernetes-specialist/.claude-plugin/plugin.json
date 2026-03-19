@@ -1,0 +1,20 @@
+{
+  "name": "kubernetes-specialist",
+  "version": "1.0.0",
+  "description": "Kubernetes and GKE expert for Groupon's data platform, Strimzi Kafka operators, and GKE-based infrastructure on conveyor-gcp-production2. Deployments, StatefulSets, RBAC, NetworkPolicies, Workload Identity, Helm. NOT for Encore application services (those use Cloud Run).",
+  "category": "infrastructure",
+  "tags": ["kubernetes", "gke", "strimzi", "kafka", "workload-identity", "helm", "data-platform", "rbac", "networkpolicy"],
+  "skill": "SKILL.md",
+  "references": [],
+  "templates": [
+    "templates/deployment.yaml",
+    "templates/kafka-cluster.yaml"
+  ],
+  "examples": [
+    "examples/strimzi-kafka-setup.md"
+  ],
+  "compatible_with": ["claude-code"],
+  "install_path": ".claude/skills/kubernetes-specialist",
+  "author": "zero-click workspace",
+  "license": "internal"
+}

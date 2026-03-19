@@ -1,0 +1,13 @@
+# Cloud Team Epics
+# Add one entry per epic you want tracked in the weekly report.
+# ktlo: true  — marks this as a Keep The Lights On epic (triggers KTLO-specific analysis)
+# ktlo: false — standard feature/project epic
+
+epics:
+  - key: CLOUD-XXXX
+    name: "Example: GCP Infrastructure Modernisation"
+    ktlo: false
+
+  - key: CLOUD-XXXX
+    name: "Example: KTLO — Cloud Operations"
+    ktlo: true

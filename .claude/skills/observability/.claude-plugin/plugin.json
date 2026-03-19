@@ -1,0 +1,20 @@
+{
+  "name": "observability",
+  "version": "1.0.0",
+  "description": "Groupon's full observability stack: Telegraf → CLAM → Thanos metrics pipeline, ELK/EFK logging stack (Elasticsearch, Logstash, Kibana, Filebeat), Grafana dashboards and alerting, APM, Kafka metrics pipeline, TPM cardinality management. Covers both Conveyor Cluster and Metrics Projects on GCP.",
+  "category": "infrastructure",
+  "tags": ["thanos", "telegraf", "clam", "grafana", "elasticsearch", "kibana", "logstash", "filebeat", "apm", "metrics", "logging", "alerting"],
+  "skill": "SKILL.md",
+  "references": [
+    "references/thanos-components.md",
+    "references/telegraf-clam.md",
+    "references/grafana-config.md",
+    "references/elk-stack.md"
+  ],
+  "templates": [],
+  "examples": [],
+  "compatible_with": ["claude-code"],
+  "install_path": ".claude/skills/observability",
+  "author": "zero-click workspace",
+  "license": "internal"
+}

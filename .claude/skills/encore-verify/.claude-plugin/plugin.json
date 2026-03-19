@@ -1,0 +1,5 @@
+{
+  "name": "encore-verify",
+  "version": "1.0.0",
+  "description": "Verification skill for Encore TS services — confirms code changes actually work"
+}

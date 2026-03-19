@@ -1,0 +1,25 @@
+{
+  "name": "gcp-cost-optimizer",
+  "version": "1.0.0",
+  "description": "GCP-only FinOps daily cost digest via BigQuery billing export + Cloud Billing API. CUD portfolio health, anomaly detection (±15% threshold), ranked recommendations. Use for GCP-specific billing drill-down when Cloudability is unavailable.",
+  "category": "finops",
+  "tags": ["gcp", "bigquery", "cud", "cost-anomaly", "billing", "daily-digest", "cloud-sql", "committed-use"],
+  "skill": "SKILL.md",
+  "references": [
+    "references/cud-portfolio.md",
+    "references/recommendation-rules.md"
+  ],
+  "templates": [
+    "templates/daily-digest.md"
+  ],
+  "examples": [
+    "examples/daily-digest-sample.md"
+  ],
+  "scripts": [
+    "../../tools/gcp-billing/fetch-costs.js"
+  ],
+  "compatible_with": ["claude-code"],
+  "install_path": ".claude/skills/gcp-cost-optimizer",
+  "author": "zero-click workspace",
+  "license": "internal"
+}

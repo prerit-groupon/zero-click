@@ -1,0 +1,21 @@
+{
+  "name": "get-shit-done",
+  "version": "1.0.0",
+  "description": "Spec-driven multi-phase project management for Groupon. Prevents context rot via PROJECT.md, REQUIREMENTS.md, ROADMAP.md, STATE.md documents. Parallel wave execution with fresh contexts per task. Use for new features or milestones spanning multiple sessions.",
+  "category": "workflow",
+  "tags": ["multi-phase", "context-engineering", "parallel-execution", "spec-driven", "milestones", "atomic-commits"],
+  "skill": "SKILL.md",
+  "references": [],
+  "templates": [
+    "templates/PROJECT.md",
+    "templates/REQUIREMENTS.md",
+    "templates/STATE.md"
+  ],
+  "examples": [
+    "examples/new-encore-service.md"
+  ],
+  "compatible_with": ["claude-code"],
+  "install_path": ".claude/skills/get-shit-done",
+  "author": "zero-click workspace",
+  "license": "internal"
+}

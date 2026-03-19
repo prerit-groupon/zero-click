@@ -1,0 +1,53 @@
+{
+  "evals": [
+    {
+      "id": "daily-cost-digest",
+      "prompt": "Give me a GCP cost digest for today — what did we spend, any anomalies, and are there any CUDs expiring soon?",
+      "assertions": [
+        { "type": "contains", "value": "Daily Cost Digest" },
+        { "type": "contains", "value": "CUD" },
+        { "type": "contains", "value": "2026-04-11" }
+      ]
+    },
+    {
+      "id": "cud-renewal-advice",
+      "prompt": "Which of our GCP committed use discounts are expiring soon and what should we do?",
+      "assertions": [
+        { "type": "contains", "value": "2025-04-11_cloud-sql" },
+        { "type": "contains", "value": "2025-04-11_memorystore" },
+        { "type": "contains", "value": "29 days" }
+      ]
+    },
+    {
+      "id": "savings-recommendations",
+      "prompt": "What GCP cost savings opportunities do we have right now?",
+      "assertions": [
+        { "type": "contains", "value": "$954" },
+        { "type": "contains", "value": "$608" },
+        { "type": "contains", "value": "N1" }
+      ]
+    },
+    {
+      "id": "schedule-daily-digest",
+      "prompt": "I want this cost report to run every morning at 8am automatically",
+      "assertions": [
+        { "type": "contains", "value": "CronCreate" },
+        { "type": "contains", "value": "0 8 * * *" }
+      ]
+    },
+    {
+      "id": "should-not-trigger-grafana",
+      "prompt": "How do I set up a Grafana dashboard to show GCP costs?",
+      "assertions": [
+        { "type": "not_contains", "value": "gcp-cost-optimizer" }
+      ]
+    },
+    {
+      "id": "should-not-trigger-kubernetes",
+      "prompt": "How do I rightsize my GKE node pools?",
+      "assertions": [
+        { "type": "not_contains", "value": "gcp-cost-optimizer" }
+      ]
+    }
+  ]
+}

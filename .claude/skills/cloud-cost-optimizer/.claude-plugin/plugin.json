@@ -1,0 +1,16 @@
+{
+  "name": "cloud-cost-optimizer",
+  "version": "1.0.0",
+  "description": "Multi-cloud FinOps daily cost digest for Groupon via Cloudability — GCP + AWS costs, anomaly detection, CUD portfolio health, ranked savings recommendations.",
+  "category": "finops",
+  "tags": ["finops", "gcp", "aws", "cloudability", "cud", "cost-anomaly", "daily-digest"],
+  "skill": "SKILL.md",
+  "references": ["references/cud-portfolio.md", "references/cloudability-api.md"],
+  "templates": ["templates/daily-digest.md"],
+  "examples": ["examples/daily-digest-sample.md"],
+  "scripts": ["../../tools/cloudability/fetch-costs.js"],
+  "compatible_with": ["claude-code"],
+  "install_path": ".claude/skills/cloud-cost-optimizer",
+  "author": "zero-click workspace",
+  "license": "internal"
+}

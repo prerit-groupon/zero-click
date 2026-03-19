@@ -1,0 +1,13 @@
+# GDS Team Epics
+# Add one entry per epic you want tracked in the weekly report.
+# ktlo: true  — marks this as a Keep The Lights On epic (triggers KTLO-specific analysis)
+# ktlo: false — standard feature/project epic
+
+epics:
+  - key: GDS-XXXX
+    name: "Example: Developer Services Platform"
+    ktlo: false
+
+  - key: GDS-XXXX
+    name: "Example: KTLO — Developer Services Maintenance"
+    ktlo: true

@@ -1,0 +1,19 @@
+{
+  "name": "second-opinion",
+  "version": "1.0.0",
+  "description": "Fast independent review of a plan, proposal, code snippet, or decision by spawning a separate Claude session with no prior context. Use for quick one-off reviews of a single file, ADR, or design decision. For thorough pre-merge feature review, use /compound-engineering /ce:review instead.",
+  "category": "workflow",
+  "tags": ["code-review", "independent-review", "adr", "design-review", "second-opinion", "fresh-context"],
+  "skill": "SKILL.md",
+  "references": [],
+  "templates": [
+    "templates/review-prompt.md"
+  ],
+  "examples": [
+    "examples/architecture-review.md"
+  ],
+  "compatible_with": ["claude-code"],
+  "install_path": ".claude/skills/second-opinion",
+  "author": "zero-click workspace",
+  "license": "internal"
+}

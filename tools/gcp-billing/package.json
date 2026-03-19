@@ -1,0 +1,17 @@
+{
+  "name": "gcp-billing-fetcher",
+  "version": "1.0.0",
+  "description": "GCP billing cost fetcher for Groupon FinOps daily digest",
+  "type": "module",
+  "scripts": {
+    "daily": "node fetch-costs.js --mode daily",
+    "costs": "node fetch-costs.js --mode costs",
+    "cuds": "node fetch-costs.js --mode cuds",
+    "recommend": "node fetch-costs.js --mode recommend"
+  },
+  "dependencies": {
+    "@google-cloud/bigquery": "^7.0.0",
+    "@google-cloud/billing": "^4.0.0",
+    "dotenv": "^16.0.0"
+  }
+}

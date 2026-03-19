@@ -1,0 +1,21 @@
+{
+  "name": "platform-architect",
+  "version": "1.0.0",
+  "description": "Backend systems architecture across Continuum and Encore for Groupon. Service decomposition, API contracts, data ownership, event-driven patterns, Continuum-to-Encore migration strategy. NOT for consumer frontend (use /mbnxt-architect), data pipelines (use /data-architect), merchant CRM (use /b2b-architect), or cross-platform strategy (use /enterprise-architect).",
+  "category": "architecture",
+  "tags": ["encore", "continuum", "service-design", "api-contracts", "migration", "event-driven", "gapi", "cloud-run"],
+  "skill": "SKILL.md",
+  "references": [
+    "references/continuum-platform.md"
+  ],
+  "templates": [
+    "templates/service-design-doc.md"
+  ],
+  "examples": [
+    "examples/continuum-to-encore-migration.md"
+  ],
+  "compatible_with": ["claude-code"],
+  "install_path": ".claude/skills/platform-architect",
+  "author": "zero-click workspace",
+  "license": "internal"
+}

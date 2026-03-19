@@ -1,0 +1,155 @@
+# Kubernetes Deployment Template — Groupon GKE
+# Conveyor Cluster: conveyor-gcp-production2
+# Note: Encore application services use Cloud Run, not GKE.
+# Use this template for data platform workloads, Strimzi Kafka support services,
+# or long-running batch jobs that cannot run on Cloud Run.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <service-name>
+  namespace: <namespace>          # e.g., data-platform, logging, monitoring
+  labels:
+    app: <service-name>
+    team: <team-name>             # e.g., dnd-ingestion, cicdo, cloud-platform
+    environment: production
+spec:
+  replicas: 2                     # minimum 2 for HA; scale based on load
+  selector:
+    matchLabels:
+      app: <service-name>
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0           # zero-downtime rollout
+  template:
+    metadata:
+      labels:
+        app: <service-name>
+        team: <team-name>
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: <service-name>-ksa   # Kubernetes SA linked to GCP SA (Workload Identity)
+
+      # Node pool targeting — required for dedicated pools
+      # Remove if using shared spot/standard pool
+      nodeSelector:
+        cloud.google.com/gke-nodepool: <pool-name>  # e.g., monitoring-platform, logging-platform
+
+      tolerations:
+        - key: "type"
+          operator: "Equal"
+          value: "<pool-name>"     # must match the pool's NoSchedule taint value
+          effect: "NoSchedule"
+
+      # Spread pods across zones for HA
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: <service-name>
+
+      containers:
+        - name: <service-name>
+          image: gcr.io/<project-id>/<service-name>:<tag>
+          ports:
+            - name: http
+              containerPort: 8080
+            - name: metrics
+              containerPort: 9090   # separate metrics port if applicable
+
+          env:
+            - name: ENV
+              value: "production"
+            - name: PROJECT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.annotations['cloud.google.com/project-id']
+
+          # Secrets from GCP Secret Manager via Workload Identity
+          # Reference via External Secrets Operator or mount via CSI driver
+          # envFrom:
+          #   - secretRef:
+          #       name: <service-name>-secrets
+
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"       # set limits; OOM kills are hard to debug
+
+          readinessProbe:
+            httpGet:
+              path: /healthz/ready
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+
+          livenessProbe:
+            httpGet:
+              path: /healthz/live
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
+
+          # Security context — run as non-root
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 1000
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+
+---
+# Workload Identity — link Kubernetes SA to GCP SA
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: <service-name>-ksa
+  namespace: <namespace>
+  annotations:
+    iam.gke.io/gcp-service-account: <service-name>-sa@<project-id>.iam.gserviceaccount.com
+
+---
+# HorizontalPodAutoscaler — scale on CPU/memory
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: <service-name>-hpa
+  namespace: <namespace>
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: <service-name>
+  minReplicas: 2
+  maxReplicas: 20
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80

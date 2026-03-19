@@ -1,0 +1,13 @@
+# SRE Team Epics
+# Add one entry per epic you want tracked in the weekly report.
+# ktlo: true  — marks this as a Keep The Lights On epic (triggers KTLO-specific analysis)
+# ktlo: false — standard feature/project epic
+
+epics:
+  - key: SRE-XXXX
+    name: "Example: Reliability Engineering Platform"
+    ktlo: false
+
+  - key: SRE-XXXX
+    name: "Example: KTLO — SRE Operational Maintenance"
+    ktlo: true

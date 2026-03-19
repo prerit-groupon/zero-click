@@ -1,0 +1,17 @@
+{
+  "name": "new-project",
+  "version": "1.0.0",
+  "description": "Bootstrap a new project in the zero-click workspace. Creates projects/<name>/ with README.md, CLAUDE.md, and docs/decisions.md, then registers the project in docs/projects.md. Self-improving: appends a retrospective entry after each use.",
+  "category": "workflow",
+  "tags": ["project-bootstrap", "registry", "scaffold", "living-context", "self-improving"],
+  "skill": "SKILL.md",
+  "references": [],
+  "templates": [],
+  "examples": [
+    "examples/new-service-setup.md"
+  ],
+  "compatible_with": ["claude-code"],
+  "install_path": ".claude/skills/new-project",
+  "author": "zero-click workspace",
+  "license": "internal"
+}

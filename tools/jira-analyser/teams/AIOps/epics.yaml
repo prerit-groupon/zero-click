@@ -1,0 +1,13 @@
+# AIOps Team Epics
+# Add one entry per epic you want tracked in the weekly report.
+# ktlo: true  — marks this as a Keep The Lights On epic (triggers KTLO-specific analysis)
+# ktlo: false — standard feature/project epic
+
+epics:
+  - key: AIOPS-XXXX
+    name: "Example: AI-Assisted Incident Response"
+    ktlo: false
+
+  - key: AIOPS-XXXX
+    name: "Example: KTLO — Observability & Alerting Maintenance"
+    ktlo: true

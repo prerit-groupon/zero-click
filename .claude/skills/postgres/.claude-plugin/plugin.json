@@ -1,0 +1,23 @@
+{
+  "name": "postgres",
+  "version": "1.0.0",
+  "description": "PostgreSQL expert for Groupon's Encore platform on GCP Cloud SQL. Schema design, Drizzle ORM patterns, query optimisation, indexing, MVCC/VACUUM, WAL, connection pooling, and MySQL-to-PostgreSQL migration from Continuum. Each Encore service owns one dedicated Cloud SQL instance.",
+  "category": "infrastructure",
+  "tags": ["postgresql", "cloud-sql", "drizzle-orm", "schema-design", "migration", "mysql-to-postgres", "vacuum", "indexing", "connection-pooling"],
+  "skill": "SKILL.md",
+  "references": [
+    "references/cloud-sql-config.md",
+    "references/performance-diagnostics.md"
+  ],
+  "templates": [
+    "templates/drizzle-schema.ts",
+    "templates/migration.ts"
+  ],
+  "examples": [
+    "examples/mysql-to-postgres-migration.md"
+  ],
+  "compatible_with": ["claude-code"],
+  "install_path": ".claude/skills/postgres",
+  "author": "zero-click workspace",
+  "license": "internal"
+}
