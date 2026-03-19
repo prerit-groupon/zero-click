@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# zero_click
-Skills &amp; Plugins
 =======
 # Zero-Click — Groupon Engineering Intelligence Hub
 
