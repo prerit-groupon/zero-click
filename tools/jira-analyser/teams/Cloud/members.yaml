@@ -1,9 +1,21 @@
 # Cloud Team Members
 # Maps Jira accountId → display name for report readability.
-# To find a member's accountId:
-#   GET https://groupondev.atlassian.net/rest/api/3/user/search?query=<name>
-#   Look for the "accountId" field in the response.
 
 members:
-  - name: "Team Member Name"
-    accountId: "replace-with-jira-account-id"
+  - name: "Jiri Broulik"
+    accountId: "63eb17ff3030fa7db808ba85"
+
+  - name: "Sidiney Crescencio"
+    accountId: "712020:8cf4bf5b-fe60-4509-ba98-c887a6dccf75"
+
+  - name: "Clarisse Sauvage"
+    accountId: "619cea01ef18ca007113e7c5"
+
+  - name: "Ishwarya Mullai Selvapandian"
+    accountId: "6102c3ae6051c5006a9f2b12"
+
+  - name: "Alin Grecu"
+    accountId: "6408ee694d5e4b44e234d83f"
+
+  - name: "Conor Farrell"
+    accountId: "6102c019ae72b2006f1009c4"

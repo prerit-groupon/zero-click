@@ -3,6 +3,7 @@ tools/gcp-billing/.env
 tools/gcp-billing/service-account-key.json
 tools/jira/.env
 tools/asana/.env
+tools/asana/.env.example
 **/*.env
 **/*-key.json
 **/*-credentials.json

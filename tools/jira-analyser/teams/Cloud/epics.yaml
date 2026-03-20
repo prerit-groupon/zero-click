@@ -1,13 +1,33 @@
 # Cloud Team Epics
-# Add one entry per epic you want tracked in the weekly report.
 # ktlo: true  — marks this as a Keep The Lights On epic (triggers KTLO-specific analysis)
 # ktlo: false — standard feature/project epic
 
 epics:
-  - key: CLOUD-XXXX
-    name: "Example: GCP Infrastructure Modernisation"
+  # 26Q1 Active Epics
+  - key: CCLOUD-7738
+    name: "KTLO — Cloud Team"
+    ktlo: true
+
+  - key: CCLOUD-7739
+    name: "[26Q1] Support migration from Akamai to Cloudflare"
     ktlo: false
 
-  - key: CLOUD-XXXX
-    name: "Example: KTLO — Cloud Operations"
-    ktlo: true
+  - key: CCLOUD-7737
+    name: "[26Q1] AWS to GCP Migration: Planning and Preparation"
+    ktlo: false
+
+  - key: CCLOUD-7736
+    name: "[26Q1] EDR S1 agent deployment on virtual machines GCP&AWS"
+    ktlo: false
+
+  - key: CCLOUD-7735
+    name: "[26Q1] Enhance GROUT Stability"
+    ktlo: false
+
+  - key: CCLOUD-7734
+    name: "[26Q1] Cloud/Infra Cost Savings"
+    ktlo: false
+
+  - key: CCLOUD-7733
+    name: "[26Q1] Enablement and Operational Support for Encore"
+    ktlo: false
